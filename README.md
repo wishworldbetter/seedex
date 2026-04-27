@@ -1,5 +1,7 @@
 # Seedex
 
+[English](./README.en.md) · [日本語](./README.ja.md) · **简体中文**
+
 **Claude Code 的 iPhone 远程控制器**。一次扫码配对,iPhone 上立刻拿到 Mac 上的全部 Claude Code 历史会话,并能实时发起 / 接管新的对话。彻底替代官方 Claude Code 的远程方案,数据始终在你自己的 Mac 上。
 
 ## 特性
