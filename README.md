@@ -27,10 +27,11 @@ brew install wishworldbetter/tap/seedex-cli
 ### 启动
 
 ```bash
-seedex-cli service install
+seedex-cli service install   # 注册到 launchd
+seedex-cli service start     # 启动 + 健康检查
 ```
 
-第一次会弹 **"Allow Seedex in Background"**,允许即可。命令内部会自动 start + 健康检查,卡住会给清晰提示。
+第一次启动会弹 **"Allow Seedex in Background"**,允许即可。
 
 ### 配对 iPhone
 
@@ -52,6 +53,7 @@ seedex-cli service refresh-env
 ### 卸载
 
 ```bash
+seedex-cli service stop
 seedex-cli service uninstall
 brew uninstall seedex-cli
 ```
@@ -71,10 +73,11 @@ curl -fsSL https://github.com/wishworldbetter/seedex/releases/latest/download/in
 ### 启动
 
 ```bash
-seedex-cli service install
+seedex-cli service install   # 写 ~/.config/systemd/user/seedex.service
+seedex-cli service start     # 启动 + 健康检查
 ```
 
-会写 `~/.config/systemd/user/seedex.service` 并自动 start。如果你**完全登出**(关 SSH、退出 GUI 会话)后仍想让它跑,启用 lingering:
+如果你**完全登出**(关 SSH、退出 GUI)后仍想让它跑,启用 lingering:
 
 ```bash
 loginctl enable-linger "$USER"
@@ -97,6 +100,7 @@ seedex-cli service refresh-env
 ### 卸载
 
 ```bash
+seedex-cli service stop
 seedex-cli service uninstall
 rm -f /usr/local/bin/seedex-cli   # 或 ~/.local/bin/seedex-cli, 看 install.sh 装哪
 ```
@@ -126,13 +130,15 @@ seedex-cli status             # 查状态
 
 ## 企业网络 / 代理
 
-如果你的 Mac / Linux 出口必须走 HTTP 代理或公司自签 CA(常见于公司网络下访问 Anthropic API),在你 shell 里 `export` 过 `https_proxy` / `http_proxy` / `SSL_CERT_FILE` / `NODE_EXTRA_CA_CERTS` 之后:
+shell 里 export 代理后正常启动即可,`service install` 会自动把代理写进 plist / systemd unit。
 
-- **`seedex-cli service install`** — install 时自动捕获 shell 中的网络 env 写进 plist / systemd unit
-- **代理变了** — 跑 `seedex-cli service refresh-env` 重新捕获,daemon 自动用新 env 重启
-- **`seedex-cli start`** — 子进程默认继承 shell env,零配置
+```bash
+export https_proxy=http://127.0.0.1:7890
+seedex-cli service install
+seedex-cli service start
+```
 
-捕获的变量白名单:`HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY` / `NO_PROXY`(含小写)+ `SSL_CERT_FILE` / `SSL_CERT_DIR` / `NODE_EXTRA_CA_CERTS`。不抓 API key / token / secret,凭据走各自的 keychain / credential 文件。
+代理变了跑 `seedex-cli service refresh-env`。
 
 ---
 
