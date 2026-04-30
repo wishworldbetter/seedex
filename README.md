@@ -50,7 +50,7 @@ brew update && brew upgrade seedex-cli
 seedex-cli service refresh-env
 ```
 
-`refresh-env` 会把 plist 重写成新版的入口和环境,不需要 uninstall。
+`refresh-env` 会重写 plist 并用新二进制重启 daemon,不需要单独 `service restart`。
 
 ### 卸载
 
@@ -100,6 +100,8 @@ seedex-cli qrcode
 ```bash
 seedex-cli service refresh-env
 ```
+
+`refresh-env` 会重写 systemd unit 并用新二进制重启 daemon,不需要单独 `service restart`。
 
 ### 卸载
 
