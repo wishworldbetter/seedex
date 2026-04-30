@@ -47,10 +47,10 @@ seedex-cli qrcode
 
 ```bash
 brew upgrade seedex-cli
-seedex-cli service refresh-env
+seedex-cli service restart
 ```
 
-`refresh-env` 会重写 plist 并用新二进制重启 daemon,不需要单独 `service restart`。
+`service restart` 会重写 plist 并用新二进制 + 当前 shell 的最新 env 重启 daemon。
 
 ### 卸载
 
@@ -98,10 +98,10 @@ seedex-cli qrcode
 重新跑一次安装脚本,然后:
 
 ```bash
-seedex-cli service refresh-env
+seedex-cli service restart
 ```
 
-`refresh-env` 会重写 systemd unit 并用新二进制重启 daemon,不需要单独 `service restart`。
+`service restart` 会重写 systemd unit 并用新二进制 + 当前 shell 的最新 env 重启 daemon。
 
 ### 卸载
 
@@ -174,7 +174,7 @@ seedex-cli status             # 查状态
 ## 企业网络 / 代理
 
 ```bash
-seedex-cli service refresh-env
+seedex-cli service restart
 ```
 
 ---
