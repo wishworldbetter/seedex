@@ -171,9 +171,9 @@ seedex-cli status             # 查状态
 
 ## 企业网络 / 代理
 
-shell 里 export 过 `*_PROXY` / `SSL_CERT_*` / `NODE_EXTRA_CA_CERTS` 之后,`service install` 会自动把这些变量写进 plist / systemd unit,代理立刻生效。
-
-代理变了跑 `seedex-cli service refresh-env` 重新捕获,daemon 自动用新 env 重启。
+```bash
+seedex-cli service refresh-env
+```
 
 ---
 
