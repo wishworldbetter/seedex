@@ -47,10 +47,13 @@ seedex-cli qrcode
 
 ```bash
 brew update && brew upgrade seedex-cli
-seedex-cli service restart
+seedex-cli service stop
+seedex-cli service uninstall
+seedex-cli service install
+seedex-cli service start
 ```
 
-`service restart` 会重写 plist 并用新二进制 + 当前 shell 的最新 env 重启 daemon。
+跨大版本(比如 v0.1.x → v0.2.x)plist 的 ProgramArguments / EnvVars 段都要换,完整重装比 `service restart` in-place 更稳。小版本之间(v0.2.x 互升)可以直接 `service restart`。
 
 ### 卸载
 
@@ -98,10 +101,13 @@ seedex-cli qrcode
 重新跑一次安装脚本,然后:
 
 ```bash
-seedex-cli service restart
+seedex-cli service stop
+seedex-cli service uninstall
+seedex-cli service install
+seedex-cli service start
 ```
 
-`service restart` 会重写 systemd unit 并用新二进制 + 当前 shell 的最新 env 重启 daemon。
+跨大版本完整重装比 `service restart` in-place 更稳。小版本之间(v0.2.x 互升)可以直接 `service restart`。
 
 ### 卸载
 
