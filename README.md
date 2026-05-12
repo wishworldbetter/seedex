@@ -121,44 +121,61 @@ rm -f /usr/local/bin/seedex-cli   # 或 ~/.local/bin/seedex-cli, 看 install.sh 
 
 ## Windows
 
-当前只支持 **WSL2 (Ubuntu)**,在 WSL distro 里跑。
+支持 **Windows 10/11 原生**(amd64 / arm64)和 **WSL2** 两条路径。
 
-### 安装
+### 前置 — Claude Code 需要 bash
 
-```bash
-curl -fsSL https://github.com/wishworldbetter/seedex/releases/latest/download/install.sh | sh
+Windows 原生没 bash,Claude Code 在 Windows 上必须找到 Git Bash 或 PowerShell 7 之一才能跑 shell 工具。任选其一装:
+
+```powershell
+winget install --id Git.Git              # Git for Windows(推荐,顺带得到 ssh/grep 等 Unix 工具)
+# 或
+winget install --id Microsoft.PowerShell  # PowerShell 7
 ```
+
+### 原生 Windows 安装(PowerShell)
+
+```powershell
+irm https://github.com/wishworldbetter/seedex/releases/latest/download/install.ps1 | iex
+```
+
+脚本会装到 `%LOCALAPPDATA%\Programs\seedex-cli\`,顺带写入用户级 PATH,同窗口立即可用。
 
 ### 启动
 
-```bash
+```powershell
 seedex-cli start
 ```
 
-WSL2 上不走 systemd user service(`loginctl enable-linger` 在 WSL 里行为不稳定),直接用 `start` 模式后台跑。WSL distro 不 shutdown 就一直在。
-
 ### 配对手机
 
-```bash
+```powershell
 seedex-cli qrcode
 ```
 
 > 出于安全考虑,**二维码扫描一次后立即失效**,下次配对需要重新跑 `seedex-cli qrcode` 生成新的。
 
-### 升级
+### 升级 / 卸载
 
-重新跑一次安装脚本,然后:
+```powershell
+# 升级:重跑安装脚本,自动停旧 daemon 再装新版
+irm https://github.com/wishworldbetter/seedex/releases/latest/download/install.ps1 | iex
 
-```bash
-seedex-cli restart
-```
-
-### 卸载
-
-```bash
+# 卸载
 seedex-cli stop
-rm -f /usr/local/bin/seedex-cli   # 或 ~/.local/bin/seedex-cli
+Remove-Item -Recurse "$env:LOCALAPPDATA\Programs\seedex-cli"
 ```
+
+### WSL2 备选
+
+如果你已经在 WSL2 里干活,也可以把它当 Linux 用:
+
+```bash
+curl -fsSL https://github.com/wishworldbetter/seedex/releases/latest/download/install.sh | sh
+seedex-cli start
+```
+
+WSL2 上不走 systemd user service(`loginctl enable-linger` 在 WSL 里行为不稳定),直接用 `start` 模式后台跑,WSL distro 不 shutdown 就一直在。
 
 ---
 
